@@ -629,3 +629,6 @@ $(DISTRIBUTE_DIR): all py | $(DISTRIBUTE_SUBDIRS)
 	cp -r python $(DISTRIBUTE_DIR)/python
 
 -include $(DEPS)
+
+neocaffe: all pycaffe
+	makecython++ python/neocaffe/_neocaffe.pyx '' "$(CXXFLAGS) $(PYTHON_LDFLAGS) -lcaffe"

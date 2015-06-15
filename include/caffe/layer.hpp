@@ -32,7 +32,8 @@ class Layer {
    * layer.
    */
   explicit Layer(const LayerParameter& param)
-    : layer_param_(param) {
+    : fresh_(false),
+      layer_param_(param) {
       // Set phase and copy blobs (if there are any).
       phase_ = param.phase();
       if (layer_param_.blobs_size() > 0) {
@@ -179,6 +180,12 @@ class Layer {
     loss_[top_index] = value;
   }
 
+  inline bool is_fresh() {
+    return fresh_;
+  }
+
+  virtual inline bool overwrites_delta() { return true; }
+
   /**
    * @brief Returns the layer type.
    */
@@ -287,6 +294,7 @@ class Layer {
 
 
  protected:
+  bool fresh_;
   /** The protobuf that stores the layer parameters */
   LayerParameter layer_param_;
   /** The phase: TRAIN or TEST */
